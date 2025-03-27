@@ -61,3 +61,17 @@ app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
   console.log(`Google OAuth callback URL: ${process.env.CLIENT_URL}`);
 });
+
+// In your backend's index.js or app.js
+const passport = require('./config/passport');
+
+// Force HTTPS in production
+if (process.env.NODE_ENV === 'production') {
+  app.use((req, res, next) => {
+    if (req.header('x-forwarded-proto') !== 'https') {
+      res.redirect(`https://${req.header('host')}${req.url}`);
+    } else {
+      next();
+    }
+  });
+}
