@@ -1,4 +1,3 @@
-// server/routes/auth.js
 const express = require('express');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
@@ -63,8 +62,6 @@ router.get('/check', (req, res) => {
 
 // Logout route
 router.get('/logout', (req, res) => {
-  // We don't actually invalidate the JWT as they're stateless,
-  // but we can provide feedback for the client
   console.log('User logout requested');
   res.status(200).json({ success: true, message: 'Logged out successfully' });
 });

@@ -1,4 +1,3 @@
-// server/utils/driveUtils.js
 const { google } = require('googleapis');
 const User = require('../models/User');
 const { refreshGoogleToken } = require('./tokenRefresh');
@@ -68,8 +67,6 @@ const saveLetterToDrive = async (accessToken, title, content, folderId, fileId =
 
   try {
     const drive = createDriveClient(accessToken);
-    
-    // Convert HTML content to plain text (simplification - consider using a proper HTML-to-Doc conversion)
     const textContent = content.replace(/<[^>]*>?/gm, '');
     
     // Prepare file metadata

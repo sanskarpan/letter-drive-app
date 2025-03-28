@@ -1,4 +1,3 @@
-// server/routes/letters.js
 const express = require('express');
 const router = express.Router();
 const Letter = require('../models/Letter');
@@ -126,20 +125,13 @@ router.post('/', authenticateUser, async (req, res) => {
 router.put('/:id', authenticateUser, async (req, res) => {
   try {
     const { title, content, saveToGoogleDrive } = req.body;
-    
-    // Find the letter
     let letter = await Letter.findById(req.params.id);
-    
     if (!letter) {
       return res.status(404).json({ message: 'Letter not found' });
     }
-    
-    // Check ownership
     if (letter.user.toString() !== req.user.id) {
       return res.status(403).json({ message: 'Not authorized to update this letter' });
     }
-    
-    // Update letter in our database
     letter.title = title;
     letter.content = content;
     await letter.save();
@@ -219,10 +211,6 @@ router.delete('/:id', authenticateUser, async (req, res) => {
     }
     
     await Letter.findByIdAndDelete(req.params.id);
-    
-    // Note: We're not deleting from Google Drive for safety
-    // If required, we could add that functionality
-    
     res.json({ message: 'Letter deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
