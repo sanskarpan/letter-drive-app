@@ -21,18 +21,21 @@ const adminRoutes = require('./routes/admin');
 // Initialize Express app
 const app = express();
 const PORT = process.env.PORT || 5000;
-
+app.enable('trust proxy');
 // Middleware
 app.use(helmet()); // Security headers
-// Enable CORS with specific origin
+
 app.use(cors({
-  origin: process.env.CLIENT_URL,
+  origin: process.env.NODE_ENV === 'production' 
+    ? [process.env.CLIENT_URL, 'https://letter-drive-fe.vercel.app'] 
+    : 'http://localhost:3000',
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-console.log(`CORS enabled for origin: ${process.env.CLIENT_URL}`);
+console.log(`CORS configured with origin: ${process.env.NODE_ENV === 'production' ? process.env.CLIENT_URL : 'http://localhost:3000'}`);
+
 app.use(morgan('dev')); // HTTP request logger
 app.use(express.json()); // Parse JSON bodies
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies

@@ -9,7 +9,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: '/api/auth/google/callback',
+      callbackURL: process.env.GOOGLE_CALLBACK_URL || '/api/auth/google/callback',
       scope: ['profile', 'email', 'https://www.googleapis.com/auth/drive.file'],
       accessType: 'offline',  // Request a refresh token
       prompt: 'consent'       // Force the consent screen to ensure we get a refresh token
